@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.contentprovidehw.databinding.FragmentMainBinding
 
@@ -23,7 +24,7 @@ class MainFragment : Fragment() {
     private var _binging: FragmentMainBinding? = null
     private val binding get() = _binging!!
 
-    private val viewModel = MainViewModel()
+    lateinit var viewModel: MainViewModel
 
 
     override fun onCreateView(
@@ -39,6 +40,12 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         permissionLauncherSingle.launch(Manifest.permission.READ_CONTACTS)
+
+        viewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[MainViewModel::class.java]
+
         initContacts()
 
     }
